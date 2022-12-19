@@ -1,0 +1,60 @@
+# Login with Next.js JWT
+
+## [Demo using typescript](https://github.com/brandon-gs/nextjs-typescript-jwt-booilerplate)
+
+## Used tools
+
+- React v17
+- Next.js v12
+- Redux
+- Express
+- JWT
+- Passport
+- Mongodb
+
+## Usage:
+
+### Installation:
+
+Make sure you have Node and NPM installed.
+
+```bash
+git clone https://github.com/brandon-gs/nextjs-jwt-login-example
+cd nextjs-jwt-login-example
+npm install
+```
+
+You need create an .env file like below
+
+```
+MONGODB_URI=YOUR_MONGODB_URI
+JWT_SECRET=YOUR_JWT_SECRET
+```
+
+### Starting the app:
+
+```bash
+# Run in dev mode:
+npm run dev
+
+# Run in production:
+npm run build
+npm start
+```
+## Idea:
+
+Server side rendered apps are awesome. They make a sweet spot between monolithic apps and single page apps powered by microservices. But they also add complexity to their creation. Keeping state on the server and the client in sync, routing on the client and the server, loading data before server rendering, etc. are some of the things that make our apps more complex. That is why frameworks such as Next.js exist, to solve most of those problems. However, things such as authentication are left to us. This is an attempt to implement the authentication based on JWT. The thing is that we can't store tokens in localStorage as we would do with SPA.
+
+The idea is to receive token from the server on the client, store it in cookies, and then whenever a page renders on the server, we would be able to access the token from the cookie.
+
+## How it works:
+
+#### The client:
+
+The user sends an auth request from the client. In the response, JWT is received, and stored in browser cookies and redux store. Then the user has access to the token from the client, and can use it to access protected routes.
+
+#### The server:
+
+When the user makes a page request, cookies are also sent along, so the server can read them. To read it, the user is using the `getInitialProps` lifecycle method, provided by Next.js. It gets an argument - the context object that contains some properties. You can read more about it [here](https://github.com/zeit/next.js/#fetching-data-and-component-lifecycle). On the `req` property, we can access `headers` property which contains the cookie with the token. An action creator is dispatched to save the token in the redux store, and the app now has access to the token again.
+
+### Feel free to make PR to improve this repo!
